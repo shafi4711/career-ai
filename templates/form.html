@@ -1,0 +1,3676 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CareerAI - Student Assessment</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #eef2ff, #eff6ff, #f5f3ff);
+            margin: 0;
+            padding: 25px;
+            color: #1e293b;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: auto;
+            background: white;
+            padding: 35px;
+            border-radius: 22px;
+            box-shadow: 0 10px 35px rgba(0,0,0,0.10);
+        }
+
+        h1 {
+            text-align: center;
+            color: #2563eb;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 35px;
+        }
+
+        h2 {
+            margin-top: 35px;
+            color: #1e293b;
+        }
+
+        label {
+            display: block;
+            margin-top: 16px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            margin-top: 7px;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            font-size: 15px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.12);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .instruction {
+            background: #e0f2fe;
+            color: #075985;
+            padding: 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            line-height: 1.6;
+        }
+
+        /* STREAMS */
+
+        .stream-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 15px;
+        }
+
+        .stream-button {
+            padding: 20px 10px;
+            border: 2px solid #e2e8f0;
+            background: white;
+            border-radius: 14px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+
+        .stream-button:hover {
+            transform: translateY(-3px);
+            border-color: #818cf8;
+        }
+
+        .stream-button.selected {
+            background: #eef2ff;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99,102,241,0.10);
+        }
+
+        /* SUBJECTS */
+
+        .subject-selection {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-top: 18px;
+        }
+
+        .subject-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 15px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .subject-option:hover {
+            border-color: #818cf8;
+            background: #eef2ff;
+        }
+
+        .subject-option.selected {
+            border-color: #6366f1;
+            background: #eef2ff;
+        }
+
+        .subject-option input {
+            width: auto;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        .subject-emoji {
+            font-size: 25px;
+        }
+
+        .subject-name {
+            font-weight: bold;
+        }
+
+        /* MARKS */
+
+        .subject-mark {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            margin-top: 10px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .subject-mark-name {
+            flex: 1;
+            font-weight: bold;
+        }
+
+        .subject-mark input {
+            width: 180px;
+            margin: 0;
+        }
+
+        /* INTERESTS */
+
+        .info-box {
+            background: #f5f3ff;
+            color: #5b21b6;
+            padding: 16px;
+            border-radius: 12px;
+            line-height: 1.6;
+        }
+
+        .interest-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            margin-top: 14px;
+            padding: 18px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+        }
+
+        .interest-name {
+            font-weight: bold;
+            flex: 1;
+        }
+
+        .stars {
+            display: flex;
+            gap: 2px;
+        }
+
+        .stars button {
+            padding: 2px;
+            margin: 0;
+            border: none;
+            background: transparent;
+            color: #cbd5e1;
+            font-size: 30px;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .stars button:hover {
+            transform: scale(1.2);
+        }
+
+        .stars button.active {
+            color: #f59e0b;
+        }
+
+        /* SKILLS */
+
+        .skill-card {
+            margin-top: 18px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f8fafc, #eef2ff);
+            border: 1px solid #dbeafe;
+            border-radius: 18px;
+        }
+
+        .skill-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .skill-question {
+            color: #64748b;
+        }
+
+        .skill-levels {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .skill-level {
+            flex: 1;
+            margin: 0;
+            padding: 12px 5px;
+            background: white;
+            color: #334155;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .skill-level:hover {
+            transform: translateY(-4px);
+            border-color: #818cf8;
+        }
+
+        .skill-level.selected {
+            background: #eef2ff;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 4px rgba(99,102,241,0.12);
+            transform: translateY(-5px);
+        }
+
+        .skill-level span {
+            display: block;
+            font-size: 32px;
+        }
+
+        .skill-level small {
+            display: block;
+            margin-top: 6px;
+        }
+
+        .skill-slider {
+            width: 100%;
+            margin-top: 25px;
+            accent-color: #6366f1;
+            cursor: pointer;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .skill-result {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 18px;
+        }
+
+        /* EMOJI RAIN */
+
+        .emoji-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 99999;
+        }
+
+        .falling-emoji {
+            position: absolute;
+            top: -80px;
+            animation-name: fall;
+            animation-timing-function: linear;
+            animation-fill-mode: forwards;
+        }
+
+        @keyframes fall {
+            0% {
+                transform: translateY(-80px) rotate(0deg);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* SUBMIT */
+
+        .submit-button {
+            width: 100%;
+            margin-top: 40px;
+            padding: 17px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #2563eb, #6366f1);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37,99,235,0.25);
+        }
+
+        /* RESULT */
+
+        #result {
+            margin-top: 30px;
+            padding: 25px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 15px;
+            display: none;
+        }
+
+        /* MOBILE */
+
+        @media(max-width:650px) {
+
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            .stream-container,
+            .subject-selection {
+                grid-template-columns: 1fr;
+            }
+
+            .skill-levels {
+                flex-direction: column;
+            }
+
+            .interest-card {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .subject-mark {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .subject-mark input {
+                width: 100%;
+            }
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <h1>🚀 CareerAI</h1>
+
+    <p class="subtitle">
+        Discover careers that match your marks,
+        interests and skills.
+    </p>
+
+
+    <!-- ========================= -->
+    <!-- STUDENT INFORMATION -->
+    <!-- ========================= -->
+
+    <h2>👨‍🎓 Student Information</h2>
+
+    <label for="studentName">
+        Your Name
+    </label>
+
+    <input
+        type="text"
+        id="studentName"
+        placeholder="Enter your name"
+    >
+
+
+    <label for="classLevel">
+        Select Your Class
+    </label>
+
+    <select
+        id="classLevel"
+        onchange="classChanged()"
+    >
+
+        <option value="">
+            Select Class
+        </option>
+
+        <option value="9">
+            Class 9
+        </option>
+
+        <option value="10">
+            Class 10
+        </option>
+
+        <option value="11">
+            Class 11
+        </option>
+
+        <option value="12">
+            Class 12
+        </option>
+
+    </select>
+
+
+    <div class="instruction">
+
+        💡 <strong>Marks instruction:</strong>
+
+        Enter marks out of 100.
+
+        <br>
+
+        If you do not have a mark yet,
+        leave it blank or enter <strong>0</strong>.
+
+        <br>
+
+        For subjects you do not study,
+        simply do not select them.
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- STREAM -->
+    <!-- ========================= -->
+
+    <div
+        id="streamSection"
+        class="hidden"
+    >
+
+        <h2>🎓 Choose Your Stream</h2>
+
+        <div class="stream-container">
+
+            <button
+                type="button"
+                class="stream-button"
+                onclick="selectStream('science', this)"
+data-stream="science"
+            >
+
+                🔬
+
+                <br><br>
+
+                <strong>Science</strong>
+
+                <br>
+
+                <small>
+                    Science & Technology
+                </small>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="stream-button"
+onclick="selectStream('commerce', this)"
+data-stream="commerce"            >
+
+                💼
+
+                <br><br>
+
+                <strong>Commerce</strong>
+
+                <br>
+
+                <small>
+                    Business & Finance
+                </small>
+
+            </button>
+
+
+            <button
+                type="button"
+                class="stream-button"
+onclick="selectStream('humanities', this)"
+data-stream="humanities"            >
+
+                🎨
+
+                <br><br>
+
+                <strong>Humanities</strong>
+
+                <br>
+
+                <small>
+                    Arts & Social Sciences
+                </small>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- SUBJECTS -->
+    <!-- ========================= -->
+
+    <h2>📚 Subjects</h2>
+
+    <div
+        id="subjectSelection"
+        class="subject-selection"
+    >
+
+        <div
+            class="instruction"
+            style="grid-column:1/-1;"
+        >
+
+            👆 Select your class first.
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- MARKS -->
+    <!-- ========================= -->
+
+    <div id="marksArea"></div>
+
+
+    <!-- ========================= -->
+    <!-- INTERESTS -->
+    <!-- ========================= -->
+
+    <h2>❤️ Your Interests</h2>
+
+    <div class="info-box">
+
+        Rate each area from
+
+        ⭐ <strong>1</strong>
+        = Not interested
+
+        to
+
+        ⭐⭐⭐⭐⭐ <strong>5</strong>
+        = Extremely interested.
+
+    </div>
+
+
+    <div id="interests">
+
+        <!-- TECHNOLOGY -->
+
+        <div class="interest-card">
+
+            <div class="interest-name">
+                💻 Technology
+            </div>
+
+            <div class="stars">
+
+                <button type="button" onclick="rateInterest(this,1)">☆</button>
+                <button type="button" onclick="rateInterest(this,2)">☆</button>
+                <button type="button" onclick="rateInterest(this,3)">☆</button>
+                <button type="button" onclick="rateInterest(this,4)">☆</button>
+                <button type="button" onclick="rateInterest(this,5)">☆</button>
+
+            </div>
+
+            <input
+                type="hidden"
+                class="interest-value"
+                value="0"
+            >
+
+        </div>
+
+
+        <!-- MEDICINE -->
+
+        <div class="interest-card">
+
+            <div class="interest-name">
+                🩺 Medicine & Healthcare
+            </div>
+
+            <div class="stars">
+
+                <button type="button" onclick="rateInterest(this,1)">☆</button>
+                <button type="button" onclick="rateInterest(this,2)">☆</button>
+                <button type="button" onclick="rateInterest(this,3)">☆</button>
+                <button type="button" onclick="rateInterest(this,4)">☆</button>
+                <button type="button" onclick="rateInterest(this,5)">☆</button>
+
+            </div>
+
+            <input type="hidden" class="interest-value" value="0">
+
+        </div>
+
+
+        <!-- BUSINESS -->
+
+        <div class="interest-card">
+
+            <div class="interest-name">
+                💼 Business & Entrepreneurship
+            </div>
+
+            <div class="stars">
+
+                <button type="button" onclick="rateInterest(this,1)">☆</button>
+                <button type="button" onclick="rateInterest(this,2)">☆</button>
+                <button type="button" onclick="rateInterest(this,3)">☆</button>
+                <button type="button" onclick="rateInterest(this,4)">☆</button>
+                <button type="button" onclick="rateInterest(this,5)">☆</button>
+
+            </div>
+
+            <input type="hidden" class="interest-value" value="0">
+
+        </div>
+
+
+        <!-- FINANCE -->
+
+        <div class="interest-card">
+
+            <div class="interest-name">
+                💰 Finance & Banking
+            </div>
+
+            <div class="stars">
+
+                <button type="button" onclick="rateInterest(this,1)">☆</button>
+                <button type="button" onclick="rateInterest(this,2)">☆</button>
+                <button type="button" onclick="rateInterest(this,3)">☆</button>
+                <button type="button" onclick="rateInterest(this,4)">☆</button>
+                <button type="button" onclick="rateInterest(this,5)">☆</button>
+
+            </div>
+
+            <input type="hidden" class="interest-value" value="0">
+
+        </div>
+
+
+        <!-- DESIGN -->
+
+        <div class="interest-card">
+
+            <div class="interest-name">
+                🎨 Design & Creativity
+            </div>
+
+            <div class="stars">
+
+                <button type="button" onclick="rateInterest(this,1)">☆</button>
+                <button type="button" onclick="rateInterest(this,2)">☆</button>
+                <button type="button" onclick="rateInterest(this,3)">☆</button>
+                <button type="button" onclick="rateInterest(this,4)">☆</button>
+                <button type="button" onclick="rateInterest(this,5)">☆</button>
+
+            </div>
+
+            <input type="hidden" class="interest-value" value="0">
+
+        </div>
+
+
+        <!-- LAW -->
+
+        <div class="interest-card">
+
+            <div class="interest-name">
+                ⚖️ Law & Justice
+            </div>
+
+            <div class="stars">
+
+                <button type="button" onclick="rateInterest(this,1)">☆</button>
+                <button type="button" onclick="rateInterest(this,2)">☆</button>
+                <button type="button" onclick="rateInterest(this,3)">☆</button>
+                <button type="button" onclick="rateInterest(this,4)">☆</button>
+                <button type="button" onclick="rateInterest(this,5)">☆</button>
+
+            </div>
+
+            <input type="hidden" class="interest-value" value="0">
+
+        </div>
+
+
+        <!-- SCIENCE -->
+
+        <div class="interest-card">
+
+            <div class="interest-name">
+                🔬 Science & Research
+            </div>
+
+            <div class="stars">
+
+                <button type="button" onclick="rateInterest(this,1)">☆</button>
+                <button type="button" onclick="rateInterest(this,2)">☆</button>
+                <button type="button" onclick="rateInterest(this,3)">☆</button>
+                <button type="button" onclick="rateInterest(this,4)">☆</button>
+                <button type="button" onclick="rateInterest(this,5)">☆</button>
+
+            </div>
+
+            <input type="hidden" class="interest-value" value="0">
+
+        </div>
+
+
+        <!-- ENGINEERING -->
+
+        <div class="interest-card">
+
+            <div class="interest-name">
+                ⚙️ Engineering
+            </div>
+
+            <div class="stars">
+
+                <button type="button" onclick="rateInterest(this,1)">☆</button>
+                <button type="button" onclick="rateInterest(this,2)">☆</button>
+                <button type="button" onclick="rateInterest(this,3)">☆</button>
+                <button type="button" onclick="rateInterest(this,4)">☆</button>
+                <button type="button" onclick="rateInterest(this,5)">☆</button>
+
+            </div>
+
+            <input type="hidden" class="interest-value" value="0">
+
+        </div>
+
+
+        <!-- MEDIA -->
+
+        <div class="interest-card">
+
+            <div class="interest-name">
+                🎥 Media & Communication
+            </div>
+
+            <div class="stars">
+
+                <button type="button" onclick="rateInterest(this,1)">☆</button>
+                <button type="button" onclick="rateInterest(this,2)">☆</button>
+                <button type="button" onclick="rateInterest(this,3)">☆</button>
+                <button type="button" onclick="rateInterest(this,4)">☆</button>
+                <button type="button" onclick="rateInterest(this,5)">☆</button>
+
+            </div>
+
+            <input type="hidden" class="interest-value" value="0">
+
+        </div>
+
+
+        <!-- PSYCHOLOGY -->
+
+        <div class="interest-card">
+
+            <div class="interest-name">
+                🧠 Psychology & Human Behaviour
+            </div>
+
+            <div class="stars">
+
+                <button type="button" onclick="rateInterest(this,1)">☆</button>
+                <button type="button" onclick="rateInterest(this,2)">☆</button>
+                <button type="button" onclick="rateInterest(this,3)">☆</button>
+                <button type="button" onclick="rateInterest(this,4)">☆</button>
+                <button type="button" onclick="rateInterest(this,5)">☆</button>
+
+            </div>
+
+            <input type="hidden" class="interest-value" value="0">
+
+        </div>
+
+
+        <!-- SPORTS -->
+
+        <div class="interest-card">
+
+            <div class="interest-name">
+                🏆 Sports & Fitness
+            </div>
+
+            <div class="stars">
+
+                <button type="button" onclick="rateInterest(this,1)">☆</button>
+                <button type="button" onclick="rateInterest(this,2)">☆</button>
+                <button type="button" onclick="rateInterest(this,3)">☆</button>
+                <button type="button" onclick="rateInterest(this,4)">☆</button>
+                <button type="button" onclick="rateInterest(this,5)">☆</button>
+
+            </div>
+
+            <input type="hidden" class="interest-value" value="0">
+
+        </div>
+
+
+        <!-- ENVIRONMENT -->
+
+        <div class="interest-card">
+
+            <div class="interest-name">
+                🌱 Environment & Nature
+            </div>
+
+            <div class="stars">
+
+                <button type="button" onclick="rateInterest(this,1)">☆</button>
+                <button type="button" onclick="rateInterest(this,2)">☆</button>
+                <button type="button" onclick="rateInterest(this,3)">☆</button>
+                <button type="button" onclick="rateInterest(this,4)">☆</button>
+                <button type="button" onclick="rateInterest(this,5)">☆</button>
+
+            </div>
+
+            <input type="hidden" class="interest-value" value="0">
+
+        </div>
+
+    </div>
+
+
+    <!-- ========================= -->
+    <!-- SKILLS -->
+    <!-- ========================= -->
+
+    <h2>🛠️ Your Skills</h2>
+
+    <div class="info-box">
+
+        Choose the emoji that best represents
+        your current level.
+
+        <br><br>
+
+        😅 Learning →
+        🙂 Improving →
+        😎 Good →
+        🔥 Strong →
+        🧠 Superpower
+
+        <br><br>
+
+        🎉 Clicking an emoji will make that
+        emoji rain across the page for 3 seconds!
+
+    </div>
+
+
+    <!-- SKILL FUNCTION -->
+
+    <div id="skills"></div>
+
+
+    <!-- ========================= -->
+    <!-- SUBMIT -->
+    <!-- ========================= -->
+<!-- ========================= -->
+<!-- CHECK ANY CAREER -->
+<!-- ========================= -->
+
+<div
+    id="careerChecker"
+    style="
+        margin-top:40px;
+        padding:25px;
+        background:linear-gradient(135deg,#eff6ff,#f5f3ff);
+        border:2px solid #c7d2fe;
+        border-radius:18px;
+    "
+>
+
+    <h2 style="
+        margin-top:0;
+        color:#2563eb;
+    ">
+        🔎 Check Any Career
+    </h2>
+
+    <p style="
+        color:#64748b;
+        line-height:1.6;
+    ">
+        Don't see the career you want above?
+        Type any career or career field below.
+        CareerAI will check how suitable it is for
+        your current education path.
+    </p>
+
+    <input
+        type="text"
+        id="careerSearch"
+        placeholder="Example: Medicine, Pilot, CA, Lawyer..."
+        style="
+            width:100%;
+            padding:14px;
+            border:1px solid #cbd5e1;
+            border-radius:10px;
+            font-size:16px;
+            margin-top:10px;
+        "
+    >
+
+    <button
+        type="button"
+        onclick="checkAnyCareer()"
+        style="
+            width:100%;
+            margin-top:12px;
+            padding:14px;
+            border:none;
+            border-radius:10px;
+            background:linear-gradient(135deg,#2563eb,#6366f1);
+            color:white;
+            font-size:16px;
+            font-weight:bold;
+            cursor:pointer;
+        "
+    >
+        🔍 Check This Career
+    </button>
+
+    <div
+        id="careerCheckResult"
+        style="margin-top:20px;"
+    ></div>
+
+</div>
+
+    <button
+        type="button"
+        class="submit-button"
+        onclick="submitAssessment()"
+    >
+
+        🚀 Predict My Career
+
+    </button>
+
+
+    <!-- ========================= -->
+    <!-- RESULT -->
+    <!-- ========================= -->
+
+    <div id="result">
+
+        <h2>
+            🎯 Assessment Complete
+        </h2>
+
+        <div id="resultContent"></div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   SUBJECT DATABASE
+===================================================== */
+
+const subjectDatabase = {
+
+    "9": [
+        "English",
+        "Mathematics",
+        "Science",
+        "Social Science",
+        "Information Technology"
+    ],
+
+    "10": [
+        "English",
+        "Mathematics",
+        "Science",
+        "Social Science",
+        "Information Technology"
+    ],
+
+    "11": {
+
+        science: [
+            "English",
+            "Physics",
+            "Chemistry",
+            "Mathematics",
+            "Biology",
+            "Computer Science",
+            "Informatics Practices",
+            "Artificial Intelligence"
+        ],
+
+        commerce: [
+            "English",
+            "Accountancy",
+            "Business Studies",
+            "Economics",
+            "Mathematics",
+            "Computer Science",
+            "Informatics Practices",
+            "Artificial Intelligence"
+        ],
+
+        humanities: [
+            "English",
+            "History",
+            "Political Science",
+            "Geography",
+            "Economics",
+            "Psychology",
+            "Sociology",
+            "Mathematics",
+            "Computer Science",
+            "Informatics Practices",
+            "Artificial Intelligence"
+        ]
+    },
+
+    "12": {
+
+        science: [
+            "English",
+            "Physics",
+            "Chemistry",
+            "Mathematics",
+            "Biology",
+            "Computer Science",
+            "Informatics Practices",
+            "Artificial Intelligence"
+        ],
+
+        commerce: [
+            "English",
+            "Accountancy",
+            "Business Studies",
+            "Economics",
+            "Mathematics",
+            "Computer Science",
+            "Informatics Practices",
+            "Artificial Intelligence"
+        ],
+
+        humanities: [
+            "English",
+            "History",
+            "Political Science",
+            "Geography",
+            "Economics",
+            "Psychology",
+            "Sociology",
+            "Mathematics",
+            "Computer Science",
+            "Informatics Practices",
+            "Artificial Intelligence"
+        ]
+    }
+};
+
+
+/* =====================================================
+   SUBJECT EMOJIS
+===================================================== */
+
+const subjectEmoji = {
+
+    "English": "📖",
+    "Mathematics": "🔢",
+    "Science": "🔬",
+    "Social Science": "🌍",
+    "Information Technology": "💻",
+    "Physics": "⚡",
+    "Chemistry": "🧪",
+    "Biology": "🧬",
+    "Computer Science": "💻",
+    "Informatics Practices": "💾",
+    "Artificial Intelligence": "🤖",
+    "Accountancy": "💰",
+    "Business Studies": "💼",
+    "Economics": "📈",
+    "History": "🏛️",
+    "Political Science": "⚖️",
+    "Geography": "🌎",
+    "Psychology": "🧠",
+    "Sociology": "👥"
+};
+
+
+/* =====================================================
+   CLASS CHANGE
+===================================================== */
+
+function classChanged() {
+
+    const classLevel =
+        document.getElementById("classLevel").value;
+
+    const streamSection =
+        document.getElementById("streamSection");
+
+    const subjectSelection =
+        document.getElementById("subjectSelection");
+
+    document.getElementById("marksArea").innerHTML = "";
+
+
+    if (classLevel === "11" || classLevel === "12") {
+
+        streamSection.classList.remove("hidden");
+
+        document.querySelectorAll(".stream-button")
+            .forEach(function(button) {
+                button.classList.remove("selected");
+            });
+
+        subjectSelection.innerHTML = `
+            <div
+                class="instruction"
+                style="grid-column:1/-1;"
+            >
+                🎓 Choose your stream first.
+                <br><br>
+                Then select the subjects you actually study.
+            </div>
+        `;
+
+    }
+
+    else if (classLevel === "9" || classLevel === "10") {
+
+        streamSection.classList.add("hidden");
+
+        showSubjectSelection(
+            subjectDatabase[classLevel]
+        );
+
+    }
+
+    else {
+
+        streamSection.classList.add("hidden");
+
+        subjectSelection.innerHTML = `
+            <div
+                class="instruction"
+                style="grid-column:1/-1;"
+            >
+                👆 Select your class first.
+            </div>
+        `;
+    }
+}
+
+
+/* =====================================================
+   SELECT STREAM
+===================================================== */
+
+function selectStream(stream, button) {
+
+    document.querySelectorAll(".stream-button")
+        .forEach(function(btn) {
+            btn.classList.remove("selected");
+        });
+
+    button.classList.add("selected");
+
+    const classLevel =
+        document.getElementById("classLevel").value;
+
+    showSubjectSelection(
+        subjectDatabase[classLevel][stream]
+    );
+}
+
+
+/* =====================================================
+   SHOW SUBJECTS
+===================================================== */
+
+function showSubjectSelection(subjectList) {
+
+    const container =
+        document.getElementById("subjectSelection");
+
+    let html = `
+
+        <div
+            class="instruction"
+            style="grid-column:1/-1;"
+        >
+            📚 <strong>Select the subjects you actually study.</strong>
+
+            <br>
+
+            Only selected subjects will ask you for marks.
+
+            <br>
+
+            💡 You can leave a mark blank or enter 0.
+        </div>
+    `;
+
+
+    subjectList.forEach(function(subject) {
+
+        html += `
+
+            <label class="subject-option">
+
+                <input
+                    type="checkbox"
+                    value="${subject}"
+                    onchange="subjectChanged(this)"
+                >
+
+                <span class="subject-emoji">
+                    ${subjectEmoji[subject] || "📚"}
+                </span>
+
+                <span class="subject-name">
+                    ${subject}
+                </span>
+
+            </label>
+
+        `;
+    });
+
+
+    const classLevel =
+        document.getElementById("classLevel").value;
+
+
+    /* OPTIONAL LANGUAGE FOR 9 AND 10 */
+
+    if (classLevel === "9" || classLevel === "10") {
+
+        html += `
+
+            <div
+                style="grid-column:1/-1; margin-top:10px;"
+            >
+
+                <label for="optionalLanguage">
+
+                    🌐 Optional Language
+
+                </label>
+
+                <select
+                    id="optionalLanguage"
+                    onchange="optionalLanguageChanged()"
+                >
+
+                    <option value="">
+                        I don't have / Skip
+                    </option>
+
+                    <option value="Malayalam">
+                        Malayalam
+                    </option>
+
+                    <option value="Urdu">
+                        Urdu
+                    </option>
+
+                    <option value="Spanish">
+                        Spanish
+                    </option>
+
+                </select>
+
+            </div>
+        `;
+    }
+
+
+    container.innerHTML = html;
+
+    updateMarks();
+}
+
+
+/* =====================================================
+   SUBJECT SELECTION
+===================================================== */
+
+function subjectChanged(checkbox) {
+
+    const card =
+        checkbox.closest(".subject-option");
+
+    if (checkbox.checked) {
+
+        card.classList.add("selected");
+
+    } else {
+
+        card.classList.remove("selected");
+
+    }
+
+    updateMarks();
+}
+
+
+/* =====================================================
+   LANGUAGE
+===================================================== */
+
+function optionalLanguageChanged() {
+
+    updateMarks();
+}
+
+
+/* =====================================================
+   UPDATE MARKS
+===================================================== */
+
+function updateMarks() {
+
+    const marksArea =
+        document.getElementById("marksArea");
+
+    const selected =
+        document.querySelectorAll(
+            "#subjectSelection input[type='checkbox']:checked"
+        );
+
+
+    let html = "";
+
+
+    if (selected.length > 0) {
+
+        html += `
+
+            <h2>
+                📝 Enter Your Marks
+            </h2>
+
+            <div class="instruction">
+
+                Enter marks out of 100.
+
+                <br>
+
+                You may leave a mark blank
+                or enter 0.
+
+            </div>
+        `;
+
+
+        selected.forEach(function(checkbox) {
+
+            const subject = checkbox.value;
+
+            html += `
+
+                <div class="subject-mark">
+
+                    <div class="subject-mark-name">
+
+                        ${subjectEmoji[subject] || "📚"}
+
+                        ${subject}
+
+                    </div>
+
+                    <input
+                        type="number"
+                        class="mark-input"
+                        data-subject="${subject}"
+                        min="0"
+                        max="100"
+                        placeholder="0 - 100"
+                    >
+
+                </div>
+            `;
+        });
+    }
+
+
+    const languageSelect =
+        document.getElementById("optionalLanguage");
+
+
+    if (
+        languageSelect &&
+        languageSelect.value
+    ) {
+
+        const language =
+            languageSelect.value;
+
+        html += `
+
+            <div class="subject-mark">
+
+                <div class="subject-mark-name">
+
+                    🌐 ${language}
+
+                </div>
+
+                <input
+                    type="number"
+                    class="mark-input"
+                    data-subject="${language}"
+                    min="0"
+                    max="100"
+                    placeholder="0 - 100"
+                >
+
+            </div>
+        `;
+    }
+
+
+    marksArea.innerHTML = html;
+}
+
+
+/* =====================================================
+   INTERESTS
+===================================================== */
+
+function rateInterest(button, rating) {
+
+    const card =
+        button.closest(".interest-card");
+
+    const buttons =
+        card.querySelectorAll(".stars button");
+
+
+    buttons.forEach(function(star, index) {
+
+        if (index < rating) {
+
+            star.textContent = "★";
+
+            star.classList.add("active");
+
+        } else {
+
+            star.textContent = "☆";
+
+            star.classList.remove("active");
+
+        }
+    });
+
+
+    card.querySelector(".interest-value").value =
+        rating;
+}
+
+
+/* =====================================================
+   SKILLS
+===================================================== */
+
+const skillList = [
+
+    {
+        name: "Problem Solving",
+        emoji: "🧩",
+        question: "How good are you at solving problems?"
+    },
+
+    {
+        name: "Programming",
+        emoji: "💻",
+        question: "How comfortable are you with coding?"
+    },
+
+    {
+        name: "Communication",
+        emoji: "🗣️",
+        question: "How good are you at communicating?"
+    },
+
+    {
+        name: "Creativity",
+        emoji: "🎨",
+        question: "How creative are you?"
+    },
+
+    {
+        name: "Teamwork",
+        emoji: "👥",
+        question: "How well do you work with others?"
+    },
+
+    {
+        name: "Leadership",
+        emoji: "👑",
+        question: "How comfortable are you leading others?"
+    },
+
+    {
+        name: "Mathematical Ability",
+        emoji: "🔢",
+        question: "How comfortable are you with numbers?"
+    },
+
+    {
+        name: "Critical Thinking",
+        emoji: "🧠",
+        question: "How well do you analyze and evaluate ideas?"
+    },
+
+    {
+        name: "Organization",
+        emoji: "📊",
+        question: "How good are you at organizing tasks?"
+    },
+
+    {
+        name: "Public Speaking",
+        emoji: "🎤",
+        question: "How comfortable are you speaking in front of people?"
+    },
+
+    {
+        name: "Research",
+        emoji: "🔍",
+        question: "How good are you at finding and understanding information?"
+    },
+
+    {
+        name: "Decision Making",
+        emoji: "⚡",
+        question: "How confidently do you make decisions?"
+    }
+
+];
+
+
+function createSkills() {
+
+    const skillsContainer =
+        document.getElementById("skills");
+
+    let html = "";
+
+
+    skillList.forEach(function(skill) {
+
+        html += `
+
+            <div class="skill-card">
+
+                <div class="skill-title">
+    ${skill.emoji} ${skill.name}
+</div>
+
+                <p class="skill-question">
+                    ${skill.question}
+                </p>
+
+
+                <div class="skill-levels">
+
+                    <button
+                        type="button"
+                        class="skill-level"
+                        onclick="selectSkill(1,this)"
+                    >
+                        <span>😅</span>
+                        <small>Learning</small>
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="skill-level"
+                        onclick="selectSkill(2,this)"
+                    >
+                        <span>🙂</span>
+                        <small>Improving</small>
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="skill-level"
+                        onclick="selectSkill(3,this)"
+                    >
+                        <span>😎</span>
+                        <small>Good</small>
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="skill-level"
+                        onclick="selectSkill(4,this)"
+                    >
+                        <span>🔥</span>
+                        <small>Strong</small>
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="skill-level"
+                        onclick="selectSkill(5,this)"
+                    >
+                        <span>🧠</span>
+                        <small>Superpower</small>
+                    </button>
+
+                </div>
+
+
+                <input
+                    class="skill-slider"
+                    type="range"
+                    min="1"
+                    max="5"
+                    value="1"
+                    oninput="moveSlider(this)"
+                >
+
+
+                <div class="slider-labels">
+
+                    <span>😅 Learning</span>
+
+                    <span>🧠 Superpower</span>
+
+                </div>
+
+
+                <div class="skill-result">
+
+                    Level:
+                    <strong>1</strong>/5
+
+                </div>
+
+
+                <input
+                    type="hidden"
+                    class="skill-value"
+                    value="1"
+                >
+
+            </div>
+
+        `;
+    });
+
+
+    skillsContainer.innerHTML = html;
+}
+
+
+/* =====================================================
+   SELECT SKILL
+===================================================== */
+
+function selectSkill(level, button) {
+
+    const card =
+        button.closest(".skill-card");
+
+
+    card.querySelectorAll(".skill-level")
+        .forEach(function(btn) {
+
+            btn.classList.remove("selected");
+
+        });
+
+
+    button.classList.add("selected");
+
+
+    const slider =
+        card.querySelector(".skill-slider");
+
+    slider.value = level;
+
+
+    card.querySelector(
+        ".skill-result strong"
+    ).textContent = level;
+
+
+    card.querySelector(
+        ".skill-value"
+    ).value = level;
+
+
+    const emoji =
+        button.querySelector("span").textContent;
+
+
+    emojiRain(emoji);
+}
+
+
+/* =====================================================
+   SLIDER
+===================================================== */
+
+function moveSlider(slider) {
+
+    const card =
+        slider.closest(".skill-card");
+
+    const level =
+        Number(slider.value);
+
+
+    card.querySelector(
+        ".skill-result strong"
+    ).textContent = level;
+
+
+    card.querySelector(
+        ".skill-value"
+    ).value = level;
+
+
+    const buttons =
+        card.querySelectorAll(".skill-level");
+
+
+    buttons.forEach(function(button, index) {
+
+        if (index + 1 === level) {
+
+            button.classList.add("selected");
+
+        } else {
+
+            button.classList.remove("selected");
+
+        }
+    });
+}
+
+
+/* =====================================================
+   EMOJI RAIN
+===================================================== */
+
+function emojiRain(emoji) {
+
+    const rain =
+        document.createElement("div");
+
+    rain.className = "emoji-rain";
+
+    document.body.appendChild(rain);
+
+
+    for (let i = 0; i < 45; i++) {
+
+        const falling =
+            document.createElement("span");
+
+        falling.className =
+            "falling-emoji";
+
+        falling.textContent =
+            emoji;
+
+
+        falling.style.left =
+            Math.random() * 100 + "vw";
+
+
+        falling.style.fontSize =
+            (20 + Math.random() * 30) + "px";
+
+
+        falling.style.animationDuration =
+            (1.5 + Math.random() * 1.5) + "s";
+
+
+        falling.style.animationDelay =
+            Math.random() * 0.5 + "s";
+
+
+        rain.appendChild(falling);
+    }
+
+
+    setTimeout(function() {
+
+        rain.remove();
+
+    }, 3000);
+}
+
+
+/* =====================================================
+   SUBMIT
+===================================================== */
+
+function submitAssessment() {
+
+    const name =
+        document.getElementById("studentName").value.trim();
+
+    const classLevel =
+        document.getElementById("classLevel").value;
+
+
+    /* ==========================================
+       BASIC VALIDATION
+    ========================================== */
+
+    if (!name) {
+        alert("Please enter your name.");
+        return;
+    }
+
+    if (!classLevel) {
+        alert("Please select your class.");
+        return;
+    }
+
+
+    /* ==========================================
+       STREAM
+    ========================================== */
+
+    let stream = "";
+
+    const selectedStream =
+        document.querySelector(".stream-button.selected");
+
+    if (
+        (classLevel === "11" || classLevel === "12") &&
+        !selectedStream
+    ) {
+        alert("Please select your stream.");
+        return;
+    }
+
+    if (selectedStream) {
+        stream = selectedStream.dataset.stream || "";
+    }
+
+
+    /* ==========================================
+       SUBJECTS
+    ========================================== */
+
+    const selectedSubjects =
+        document.querySelectorAll(
+            "#subjectSelection input[type='checkbox']:checked"
+        );
+
+    if (selectedSubjects.length === 0) {
+        alert("Please select at least one subject.");
+        return;
+    }
+
+
+    /* ==========================================
+       MARKS
+    ========================================== */
+
+    const marks = {};
+
+    document.querySelectorAll(".mark-input")
+        .forEach(function(input) {
+
+            const value =
+                input.value.trim();
+
+            marks[input.dataset.subject] =
+                value === ""
+                    ? 0
+                    : Number(value);
+
+        });
+
+
+    /* ==========================================
+       INTERESTS
+    ========================================== */
+
+    const interests = {};
+
+    document.querySelectorAll(".interest-card")
+        .forEach(function(card) {
+
+            /*
+             * Get the exact interest name.
+             * Emoji is removed.
+             */
+
+            let interestName =
+                card.querySelector(".interest-name")
+                    .textContent
+                    .trim();
+
+            interestName =
+                interestName.replace(
+                    /^[^\w]+/u,
+                    ""
+                );
+
+            const value =
+                Number(
+                    card.querySelector(
+                        ".interest-value"
+                    ).value
+                );
+
+            interests[interestName] = value;
+
+        });
+
+
+    /* ==========================================
+       SKILLS
+    ========================================== */
+
+    const skills = {};
+
+    document.querySelectorAll(".skill-card")
+        .forEach(function(card) {
+
+            let skillName =
+                card.querySelector(".skill-title")
+                    .textContent
+                    .trim();
+
+            skillName =
+                skillName.replace(
+                    /^[^\w]+/u,
+                    ""
+                );
+
+            const value =
+                Number(
+                    card.querySelector(
+                        ".skill-value"
+                    ).value
+                );
+
+            skills[skillName] = value;
+
+        });
+
+
+    /* ==========================================
+       OPTIONAL LANGUAGE
+    ========================================== */
+
+    let language = "";
+
+    const languageSelect =
+        document.getElementById(
+            "optionalLanguage"
+        );
+
+    if (languageSelect) {
+        language =
+            languageSelect.value;
+    }
+
+
+    /* ==========================================
+       RESULT AREA
+    ========================================== */
+
+    const result =
+        document.getElementById("result");
+
+    const resultContent =
+        document.getElementById("resultContent");
+
+
+    resultContent.innerHTML = `
+
+        <p>
+            👋 Hello
+            <strong>${name}</strong>!
+        </p>
+
+        <p>
+            🎓 Class:
+            <strong>${classLevel}</strong>
+        </p>
+
+        ${
+            stream
+            ?
+            `
+            <p>
+                📚 Stream:
+                <strong>${stream}</strong>
+            </p>
+            `
+            :
+            ""
+        }
+
+        ${
+            language
+            ?
+            `
+            <p>
+                🌐 Optional Language:
+                <strong>${language}</strong>
+            </p>
+            `
+            :
+            ""
+        }
+
+        <hr>
+
+        <p>
+            🤖 Analyzing your marks,
+            interests and skills...
+        </p>
+
+        <p>
+            ⏳ Finding careers that are
+            suitable for your stream...
+        </p>
+
+    `;
+
+    result.style.display = "block";
+
+    result.scrollIntoView({
+        behavior: "smooth"
+    });
+
+
+    /* ==========================================
+       SEND DATA TO FLASK
+    ========================================== */
+
+    fetch("/submit-assessment", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            studentName: name,
+
+            class: classLevel,
+
+            stream: stream,
+
+            optionalLanguage: language,
+
+            marks: marks,
+
+            interests: interests,
+
+            skills: skills
+
+        })
+
+    })
+
+
+    /* ==========================================
+       SERVER RESPONSE
+    ========================================== */
+
+    .then(function(response) {
+
+        if (!response.ok) {
+
+            throw new Error(
+                "Server returned an error."
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+
+    .then(function(data) {
+
+        if (!data.success) {
+
+            resultContent.innerHTML += `
+
+                <hr>
+
+                <p style="color:#dc2626;">
+                    ❌
+                    ${
+                        data.message ||
+                        "Something went wrong."
+                    }
+                </p>
+
+            `;
+
+            return;
+        }
+
+
+        /* ======================================
+           SUCCESS
+        ====================================== */
+
+        resultContent.innerHTML = `
+
+            <p>
+                👋 Hello
+                <strong>${name}</strong>!
+            </p>
+
+            <p>
+                🎓 Class:
+                <strong>${classLevel}</strong>
+            </p>
+
+            ${
+                stream
+                ?
+                `
+                <p>
+                    📚 Stream:
+                    <strong>${stream}</strong>
+                </p>
+                `
+                :
+                ""
+            }
+
+            ${
+                language
+                ?
+                `
+                <p>
+                    🌐 Optional Language:
+                    <strong>${language}</strong>
+                </p>
+                `
+                :
+                ""
+            }
+
+            <hr>
+
+            <p style="color:#16a34a;">
+                ✅ Your assessment has been
+                saved successfully!
+            </p>
+
+            <h2>
+                🎯 Your Career Matches
+            </h2>
+
+            <p>
+                Based on your marks, interests,
+                skills and stream, here are your
+                strongest suitable career matches:
+            </p>
+
+            <div id="careerRecommendations"></div>
+
+        `;
+
+
+        /* ======================================
+           CAREER RECOMMENDATIONS
+        ====================================== */
+
+        const recommendations =
+            document.getElementById(
+                "careerRecommendations"
+            );
+
+
+        if (
+            data.recommendations &&
+            data.recommendations.length > 0
+        ) {
+
+            let careerHTML = "";
+
+
+            data.recommendations.forEach(
+                function(item, index) {
+
+                    careerHTML += `
+
+                        <div style="
+                            margin-top:18px;
+                            padding:20px;
+                            background:white;
+                            border:1px solid #dbeafe;
+                            border-radius:16px;
+                            box-shadow:
+                                0 4px 12px
+                                rgba(0,0,0,0.05);
+                        ">
+
+                            <div style="
+                                font-size:19px;
+                                font-weight:bold;
+                                color:#1e293b;
+                            ">
+
+                                ${index + 1}.
+                                ${item.career}
+
+                            </div>
+
+
+                            <div style="
+                                margin-top:10px;
+                                color:#64748b;
+                            ">
+
+                                🎯 Match Score:
+
+                                <strong style="
+                                    color:#2563eb;
+                                ">
+                                    ${item.score}
+                                </strong>
+
+                            </div>
+
+
+                            <div style="
+                                margin-top:10px;
+                                display:flex;
+                                gap:8px;
+                                flex-wrap:wrap;
+                            ">
+
+                                <span style="
+                                    background:#eff6ff;
+                                    color:#1d4ed8;
+                                    padding:5px 9px;
+                                    border-radius:8px;
+                                    font-size:13px;
+                                ">
+                                    📚 Subjects:
+                                    ${item.subject_match}%
+                                </span>
+
+
+                                <span style="
+                                    background:#f5f3ff;
+                                    color:#6d28d9;
+                                    padding:5px 9px;
+                                    border-radius:8px;
+                                    font-size:13px;
+                                ">
+                                    ❤️ Interest:
+                                    ${item.interest_match}%
+                                </span>
+
+
+                                <span style="
+                                    background:#f0fdf4;
+                                    color:#15803d;
+                                    padding:5px 9px;
+                                    border-radius:8px;
+                                    font-size:13px;
+                                ">
+                                    🛠️ Skills:
+                                    ${item.skill_match}%
+                                </span>
+
+                            </div>
+
+
+                            <button
+                                type="button"
+                                onclick="viewCareerPath('${item.career}')"
+                                style="
+                                    width:100%;
+                                    margin-top:15px;
+                                    padding:12px;
+                                    border:none;
+                                    border-radius:10px;
+                                    background:
+                                        linear-gradient(
+                                            135deg,
+                                            #2563eb,
+                                            #6366f1
+                                        );
+                                    color:white;
+                                    font-weight:bold;
+                                    font-size:15px;
+                                    cursor:pointer;
+                                "
+                            >
+
+                                🛣️ View Career Path
+
+                            </button>
+
+                        </div>
+
+                    `;
+
+                }
+            );
+
+
+            recommendations.innerHTML =
+                careerHTML;
+
+        }
+
+        else {
+
+            recommendations.innerHTML = `
+
+                <div style="
+                    padding:20px;
+                    background:#fff7ed;
+                    border:1px solid #fed7aa;
+                    border-radius:12px;
+                ">
+
+                    <strong>
+                        No suitable careers found.
+                    </strong>
+
+                    <p>
+                        The selected stream and subjects
+                        may not provide enough information
+                        for a recommendation.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+    })
+
+
+    /* ==========================================
+       ERROR
+    ========================================== */
+
+    .catch(function(error) {
+
+        console.error(
+            "CareerAI Error:",
+            error
+        );
+
+        resultContent.innerHTML += `
+
+            <hr>
+
+            <p style="color:#dc2626;">
+
+                ❌ Could not connect to the
+                CareerAI server.
+
+            </p>
+
+            <p style="color:#64748b;">
+
+                Please make sure Flask is running.
+
+            </p>
+
+        `;
+
+    });
+
+}
+   // ⭐ ADD THIS
+
+/* =====================================================
+   START SKILLS
+===================================================== */
+
+createSkills();
+
+/* =====================================================
+   CAREER DETAILS
+===================================================== */
+
+function showCareerDetails(careerName) {
+
+    const resultContent =
+        document.getElementById("resultContent");
+
+    const existing =
+        document.getElementById("careerDetails");
+
+    if (existing) {
+        existing.remove();
+    }
+
+    const detailsBox =
+        document.createElement("div");
+
+    detailsBox.id = "careerDetails";
+
+    detailsBox.style.marginTop = "30px";
+
+    detailsBox.innerHTML = `
+
+        <div style="
+            padding:25px;
+            background:linear-gradient(
+                135deg,
+                #eef2ff,
+                #f5f3ff
+            );
+            border:2px solid #c7d2fe;
+            border-radius:18px;
+        ">
+
+            <h2>
+                🚀 ${careerName}
+            </h2>
+
+            <p>
+                🤖 Here's your recommended path
+                toward this career.
+            </p>
+
+            <div id="careerLoading">
+                Loading career information...
+            </div>
+
+        </div>
+
+    `;
+
+    resultContent.appendChild(detailsBox);
+
+    detailsBox.scrollIntoView({
+        behavior: "smooth"
+    });
+
+
+    fetch(
+        "/career/" +
+        encodeURIComponent(careerName)
+    )
+
+    .then(function(response) {
+
+        return response.json();
+
+    })
+
+    .then(function(data) {
+
+        if (!data.success) {
+
+            document.getElementById(
+                "careerLoading"
+            ).innerHTML = `
+                <p>
+                    Could not load career information.
+                </p>
+            `;
+
+            return;
+        }
+
+
+        let roadmapHTML = "";
+
+        data.roadmap.forEach(
+            function(step, index) {
+
+                roadmapHTML += `
+
+                    <div style="
+                        display:flex;
+                        gap:15px;
+                        margin-top:15px;
+                        padding:15px;
+                        background:white;
+                        border-radius:12px;
+                        border:1px solid #e2e8f0;
+                    ">
+
+                        <div style="
+                            min-width:35px;
+                            height:35px;
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            background:#6366f1;
+                            color:white;
+                            border-radius:50%;
+                            font-weight:bold;
+                        ">
+                            ${index + 1}
+                        </div>
+
+                        <div>
+                            ${step}
+                        </div>
+
+                    </div>
+
+                `;
+            }
+        );
+
+
+        const courseHTML =
+            data.courses
+                .map(
+                    course =>
+                        `<li>${course}</li>`
+                )
+                .join("");
+
+
+        const degreeHTML =
+            data.degrees
+                .map(
+                    degree =>
+                        `<li>${degree}</li>`
+                )
+                .join("");
+
+
+        const skillHTML =
+            data.skills
+                .map(
+                    skill =>
+                        `<li>${skill}</li>`
+                )
+                .join("");
+
+
+        const opportunityHTML =
+            data.opportunities
+                .map(
+                    opportunity =>
+                        `<li>${opportunity}</li>`
+                )
+                .join("");
+
+
+        const benefitHTML =
+            data.benefits
+                .map(
+                    benefit =>
+                        `<li>${benefit}</li>`
+                )
+                .join("");
+
+
+        const demeritHTML =
+            data.demerits
+                .map(
+                    demerit =>
+                        `<li>${demerit}</li>`
+                )
+                .join("");
+
+
+        document.getElementById(
+            "careerLoading"
+        ).innerHTML = `
+
+            <hr>
+
+            <h3>📚 Recommended Courses</h3>
+
+            <ul>
+                ${courseHTML}
+            </ul>
+
+
+            <h3>🎓 Degree Options</h3>
+
+            <ul>
+                ${degreeHTML}
+            </ul>
+
+
+            <h3>🛣️ Your Career Roadmap</h3>
+
+            ${roadmapHTML}
+
+
+            <h3>🛠️ Skills To Develop</h3>
+
+            <ul>
+                ${skillHTML}
+            </ul>
+
+
+            <h3>💼 Career Opportunities</h3>
+
+            <ul>
+                ${opportunityHTML}
+            </ul>
+
+
+            <h3>👍 Benefits</h3>
+
+            <ul>
+                ${benefitHTML}
+            </ul>
+
+
+            <h3>👎 Demerits</h3>
+
+            <ul>
+                ${demeritHTML}
+            </ul>
+
+        `;
+
+    })
+
+    .catch(function(error) {
+
+        console.error(error);
+
+        document.getElementById(
+            "careerLoading"
+        ).innerHTML = `
+
+            <p style="color:#dc2626;">
+                ❌ Could not load career information.
+            </p>
+
+        `;
+
+    });
+
+}
+
+/* =====================================================
+   CAREER PATH
+===================================================== */
+
+function viewCareerPath(career) {
+
+    const paths = {
+
+        "Software Engineering": {
+            course: "B.Tech / B.E. in Computer Science",
+            degree: "B.Tech / B.E.",
+            roadmap: [
+                "Complete Class 11 & 12 with strong Mathematics and Computer Science",
+                "Learn programming fundamentals",
+                "Prepare for entrance exams if required",
+                "Complete a Computer Science degree",
+                "Build real-world projects",
+                "Complete internships",
+                "Develop skills in programming, databases and software development",
+                "Apply for Software Engineer / Developer roles"
+            ],
+            benefits: [
+                "High demand for skilled professionals",
+                "Many technology career options",
+                "Good opportunities for remote work"
+            ],
+            demerits: [
+                "Requires continuous learning",
+                "Can involve long hours of screen work",
+                "Technology changes quickly"
+            ],
+            opportunities: [
+                "Software Engineer",
+                "Web Developer",
+                "App Developer",
+                "Backend Developer",
+                "Full Stack Developer"
+            ]
+        },
+
+
+        "Medicine": {
+            course: "MBBS",
+            degree: "MBBS",
+            roadmap: [
+                "Complete Class 11 & 12 with Physics, Chemistry and Biology",
+                "Prepare for NEET",
+                "Qualify for medical admission",
+                "Complete MBBS",
+                "Complete compulsory internship",
+                "Register as a medical professional",
+                "Choose a specialization or begin medical practice"
+            ],
+            benefits: [
+                "Highly respected profession",
+                "Strong career demand",
+                "Opportunity to directly help people"
+            ],
+            demerits: [
+                "Very long education period",
+                "Highly competitive entrance process",
+                "Can involve stressful working conditions"
+            ],
+            opportunities: [
+                "General Physician",
+                "Surgeon",
+                "Specialist Doctor",
+                "Medical Researcher",
+                "Hospital Administrator"
+            ]
+        },
+
+
+        "Engineering": {
+            course: "B.Tech / B.E.",
+            degree: "B.Tech / B.E.",
+            roadmap: [
+                "Complete Class 11 & 12 with Mathematics and Physics",
+                "Prepare for engineering entrance examinations",
+                "Choose an engineering specialization",
+                "Complete B.Tech / B.E.",
+                "Build technical projects",
+                "Complete internships",
+                "Develop industry-specific skills",
+                "Apply for engineering jobs"
+            ],
+            benefits: [
+                "Many specialization options",
+                "Strong technical career opportunities",
+                "Can work across many industries"
+            ],
+            demerits: [
+                "Competitive field",
+                "Requires strong technical skills",
+                "Continuous learning is important"
+            ],
+            opportunities: [
+                "Mechanical Engineer",
+                "Civil Engineer",
+                "Electrical Engineer",
+                "Electronics Engineer",
+                "Engineering Consultant"
+            ]
+        },
+
+
+        "Business & Management": {
+            course: "BBA / BMS → MBA",
+            degree: "BBA / BMS / MBA",
+            roadmap: [
+                "Complete Class 11 & 12 in Commerce or Humanities",
+                "Develop communication and leadership skills",
+                "Complete BBA / BMS or another business degree",
+                "Gain internship experience",
+                "Develop management and business skills",
+                "Consider an MBA",
+                "Build professional experience",
+                "Move into management or business leadership"
+            ],
+            benefits: [
+                "Wide range of career options",
+                "Useful across many industries",
+                "Strong entrepreneurship opportunities"
+            ],
+            demerits: [
+                "Competitive job market",
+                "Leadership positions take time to reach",
+                "Networking and experience are important"
+            ],
+            opportunities: [
+                "Business Manager",
+                "Marketing Manager",
+                "HR Manager",
+                "Operations Manager",
+                "Entrepreneur"
+            ]
+        },
+
+
+        "Finance & Accounting": {
+            course: "B.Com / CA / CMA / ACCA",
+            degree: "B.Com / Professional Finance Qualification",
+            roadmap: [
+                "Complete Class 11 & 12 Commerce",
+                "Build strong Accountancy and Mathematics skills",
+                "Complete B.Com or a professional qualification",
+                "Develop accounting and financial analysis skills",
+                "Complete internships",
+                "Gain professional experience",
+                "Pursue CA, CMA, ACCA or related qualifications",
+                "Apply for finance and accounting roles"
+            ],
+            benefits: [
+                "Strong demand for financial professionals",
+                "Many professional qualification options",
+                "Career opportunities across industries"
+            ],
+            demerits: [
+                "Professional exams can be difficult",
+                "Requires accuracy and attention to detail",
+                "Some roles involve repetitive financial work"
+            ],
+            opportunities: [
+                "Accountant",
+                "Chartered Accountant",
+                "Financial Analyst",
+                "Auditor",
+                "Tax Consultant"
+            ]
+        },
+
+
+        "Law": {
+            course: "BA LLB / BBA LLB / B.Com LLB",
+            degree: "Integrated LLB",
+            roadmap: [
+                "Complete Class 11 & 12",
+                "Develop communication and reasoning skills",
+                "Prepare for law entrance examinations if required",
+                "Complete an integrated law degree",
+                "Complete internships with legal professionals",
+                "Develop legal research and communication skills",
+                "Complete required professional registration",
+                "Begin legal practice or enter a legal organization"
+            ],
+            benefits: [
+                "Many areas of specialization",
+                "Strong communication-based career",
+                "Opportunities in private and public sectors"
+            ],
+            demerits: [
+                "Competitive field",
+                "Requires strong reading and research",
+                "Career growth can take time"
+            ],
+            opportunities: [
+                "Lawyer",
+                "Corporate Lawyer",
+                "Legal Advisor",
+                "Legal Researcher",
+                "Government Legal Officer"
+            ]
+        },
+
+
+        "Psychology": {
+            course: "BA/BSc Psychology → Master's",
+            degree: "Bachelor's + Master's",
+            roadmap: [
+                "Complete Class 11 & 12",
+                "Study Psychology at undergraduate level",
+                "Develop research and communication skills",
+                "Complete a Bachelor's degree",
+                "Complete a Master's degree for advanced roles",
+                "Gain supervised practical experience",
+                "Choose a specialization",
+                "Build a professional career in psychology or related fields"
+            ],
+            benefits: [
+                "Growing interest in mental health",
+                "Multiple specialization options",
+                "People-focused career"
+            ],
+            demerits: [
+                "Advanced roles often require postgraduate study",
+                "Requires strong communication skills",
+                "Emotional demands can be high"
+            ],
+            opportunities: [
+                "Psychology Researcher",
+                "Counsellor",
+                "HR Professional",
+                "Behavioural Researcher",
+                "Psychology Educator"
+            ]
+        },
+
+
+        "Media & Communication": {
+            course: "BA Journalism / Mass Communication",
+            degree: "BA / Bachelor's in Mass Communication",
+            roadmap: [
+                "Complete Class 11 & 12",
+                "Develop writing and communication skills",
+                "Build a portfolio",
+                "Complete a media or communication degree",
+                "Complete internships",
+                "Gain experience through projects",
+                "Develop digital media skills",
+                "Enter the media and communication industry"
+            ],
+            benefits: [
+                "Creative career opportunities",
+                "Many types of media roles",
+                "Strong digital opportunities"
+            ],
+            demerits: [
+                "Competitive industry",
+                "Income can vary by role",
+                "Deadlines can be demanding"
+            ],
+            opportunities: [
+                "Journalist",
+                "Content Creator",
+                "Public Relations Specialist",
+                "Copywriter",
+                "Media Producer"
+            ]
+        },
+
+
+        "Graphic & UX Design": {
+            course: "B.Des / Bachelor's in Design",
+            degree: "B.Des / Design Degree",
+            roadmap: [
+                "Complete Class 11 & 12",
+                "Develop drawing and design fundamentals",
+                "Learn design software",
+                "Build a design portfolio",
+                "Complete a design degree or relevant course",
+                "Complete internships and projects",
+                "Learn UI/UX principles",
+                "Apply for design positions"
+            ],
+            benefits: [
+                "Creative career",
+                "Portfolio-based opportunities",
+                "Freelance opportunities available"
+            ],
+            demerits: [
+                "Highly portfolio-driven",
+                "Client feedback can be challenging",
+                "Requires continuous skill development"
+            ],
+            opportunities: [
+                "Graphic Designer",
+                "UI Designer",
+                "UX Designer",
+                "Product Designer",
+                "Visual Designer"
+            ]
+        },
+
+
+        "Environmental Science": {
+            course: "BSc Environmental Science",
+            degree: "BSc / MSc Environmental Science",
+            roadmap: [
+                "Complete Class 11 & 12 with relevant science subjects",
+                "Build knowledge of biology, chemistry and environmental systems",
+                "Complete a Bachelor's degree",
+                "Participate in research or field projects",
+                "Complete internships",
+                "Consider a Master's degree",
+                "Develop research and environmental analysis skills",
+                "Enter environmental or research organizations"
+            ],
+            benefits: [
+                "Important and growing field",
+                "Research opportunities",
+                "Work connected to environmental issues"
+            ],
+            demerits: [
+                "Some jobs require postgraduate study",
+                "Fieldwork may be required",
+                "Job opportunities vary by specialization"
+            ],
+            opportunities: [
+                "Environmental Scientist",
+                "Researcher",
+                "Environmental Consultant",
+                "Conservation Officer",
+                "Sustainability Specialist"
+            ]
+        }
+
+    };
+
+
+    const path = paths[career];
+
+
+    if (!path) {
+
+        alert(
+            "Career path for " +
+            career +
+            " is not available yet."
+        );
+
+        return;
+    }
+
+
+    const result =
+        document.getElementById("result");
+
+
+    const resultContent =
+        document.getElementById("resultContent");
+
+
+    resultContent.innerHTML = `
+
+        <h2>
+            🛣️ ${career} Career Path
+        </h2>
+
+        <div style="
+            margin-top:15px;
+            padding:18px;
+            background:#eff6ff;
+            border-radius:14px;
+        ">
+
+            <strong>🎓 Recommended Course</strong>
+
+            <p>
+                ${path.course}
+            </p>
+
+            <strong>📜 Degree</strong>
+
+            <p>
+                ${path.degree}
+            </p>
+
+        </div>
+
+
+        <h3 style="margin-top:25px;">
+            🪜 Step-by-Step Roadmap
+        </h3>
+
+        <div>
+
+            ${path.roadmap.map(function(step, index) {
+
+                return `
+
+                    <div style="
+                        display:flex;
+                        gap:15px;
+                        margin-top:12px;
+                        padding:15px;
+                        background:white;
+                        border:1px solid #dbeafe;
+                        border-radius:12px;
+                    ">
+
+                        <strong style="
+                            color:#2563eb;
+                            min-width:30px;
+                        ">
+                            ${index + 1}
+                        </strong>
+
+                        <span>
+                            ${step}
+                        </span>
+
+                    </div>
+
+                `;
+
+            }).join("")}
+
+        </div>
+
+
+        <h3 style="margin-top:25px;">
+            👍 Benefits
+        </h3>
+
+        <ul>
+
+            ${path.benefits.map(function(item) {
+                return `<li>${item}</li>`;
+            }).join("")}
+
+        </ul>
+
+
+        <h3 style="margin-top:25px;">
+            👎 Demerits
+        </h3>
+
+        <ul>
+
+            ${path.demerits.map(function(item) {
+                return `<li>${item}</li>`;
+            }).join("")}
+
+        </ul>
+
+
+        <h3 style="margin-top:25px;">
+            💼 Career Opportunities
+        </h3>
+
+        <ul>
+
+            ${path.opportunities.map(function(item) {
+                return `<li>${item}</li>`;
+            }).join("")}
+
+        </ul>
+
+
+        <button
+            type="button"
+            onclick="location.reload()"
+            style="
+                width:100%;
+                margin-top:25px;
+                padding:14px;
+                border:none;
+                border-radius:10px;
+                background:#1e293b;
+                color:white;
+                font-weight:bold;
+                cursor:pointer;
+            "
+        >
+            🔄 Take Assessment Again
+        </button>
+
+    `;
+
+
+    result.style.display = "block";
+
+
+    result.scrollIntoView({
+        behavior: "smooth"
+    });
+
+}
+
+createSkills();
+
+
+/* =====================================================
+   CHECK ANY CAREER
+===================================================== */
+
+function checkAnyCareer() {
+
+    const careerInput =
+        document.getElementById("careerSearch");
+
+    const result =
+        document.getElementById("careerCheckResult");
+
+    const career =
+        careerInput.value.trim();
+
+    if (!career) {
+
+        alert("Please enter a career.");
+
+        return;
+    }
+
+
+    /* GET STUDENT INFORMATION */
+
+    const classLevel =
+        document.getElementById("classLevel").value;
+
+    const selectedStream =
+        document.querySelector(
+            ".stream-button.selected"
+        );
+
+
+    let stream = "";
+
+    if (selectedStream) {
+        stream = selectedStream.dataset.stream;
+    }
+
+
+    /* GET SELECTED SUBJECTS */
+
+    const selectedSubjects =
+        Array.from(
+            document.querySelectorAll(
+                "#subjectSelection input[type='checkbox']:checked"
+            )
+        ).map(function(checkbox) {
+            return checkbox.value;
+        });
+
+
+    /* SHOW LOADING */
+
+    result.innerHTML = `
+
+        <div style="
+            padding:20px;
+            background:white;
+            border-radius:14px;
+            border:1px solid #dbeafe;
+            text-align:center;
+        ">
+
+            🔎 Checking
+            <strong>${career}</strong>...
+
+        </div>
+
+    `;
+
+
+    /*
+       SEND THE CAREER REQUEST TO FLASK
+    */
+
+    fetch("/check-career", {
+
+        method: "POST",
+
+        headers: {
+            "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify({
+
+            career: career,
+
+            class: classLevel,
+
+            stream: stream,
+
+            subjects: selectedSubjects
+
+        })
+
+    })
+
+    .then(function(response) {
+
+        return response.json();
+
+    })
+
+    .then(function(data) {
+
+        if (!data.success) {
+
+            result.innerHTML = `
+
+                <div style="
+                    padding:20px;
+                    background:#fef2f2;
+                    border:1px solid #fecaca;
+                    border-radius:14px;
+                    color:#991b1b;
+                ">
+
+                    ❌ ${data.message ||
+                    "Could not check this career."}
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        /*
+           DISPLAY CAREER RESULTS
+        */
+
+        let html = `
+
+            <div style="
+                margin-top:15px;
+                padding:22px;
+                background:white;
+                border:1px solid #dbeafe;
+                border-radius:16px;
+                box-shadow:0 4px 12px rgba(0,0,0,0.05);
+            ">
+
+                <h2 style="
+                    margin-top:0;
+                    color:#2563eb;
+                ">
+
+                    🎯 ${data.career}
+
+                </h2>
+
+
+                <div style="
+                    font-size:18px;
+                    margin-bottom:15px;
+                ">
+
+                    Compatibility:
+
+                    <strong style="
+                        color:${data.compatible
+                            ? "#16a34a"
+                            : "#dc2626"};
+                    ">
+
+                        ${data.score}%
+
+                    </strong>
+
+                </div>
+
+        `;
+
+
+        /*
+           POSSIBLE / NOT POSSIBLE
+        */
+
+        if (data.compatible) {
+
+            html += `
+
+                <div style="
+                    padding:15px;
+                    background:#f0fdf4;
+                    border:1px solid #bbf7d0;
+                    border-radius:12px;
+                    color:#166534;
+                ">
+
+                    ✅ <strong>
+                        This career is possible
+                        for your current path.
+                    </strong>
+
+                    <br><br>
+
+                    ${data.reason}
+
+                </div>
+
+            `;
+
+        } else {
+
+            html += `
+
+                <div style="
+                    padding:15px;
+                    background:#fef2f2;
+                    border:1px solid #fecaca;
+                    border-radius:12px;
+                    color:#991b1b;
+                ">
+
+                    ❌ <strong>
+                        This career is not
+                        directly available
+                        through your current path.
+                    </strong>
+
+                    <br><br>
+
+                    <strong>Why?</strong>
+
+                    <br>
+
+                    ${data.reason}
+
+                </div>
+
+            `;
+
+        }
+
+
+        /*
+           ALTERNATIVE CAREERS
+        */
+
+        if (
+            data.alternatives &&
+            data.alternatives.length > 0
+        ) {
+
+            html += `
+
+                <h3 style="
+                    margin-top:25px;
+                ">
+
+                    🔄 Related Careers You Can Consider
+
+                </h3>
+
+            `;
+
+
+            data.alternatives.forEach(
+                function(option) {
+
+                    html += `
+
+                        <div style="
+                            margin-top:12px;
+                            padding:16px;
+                            background:#f8fafc;
+                            border:1px solid #e2e8f0;
+                            border-radius:12px;
+                        ">
+
+                            <strong>
+                                ${option.career}
+                            </strong>
+
+                            <br><br>
+
+                            🎯 Compatibility:
+                            <strong>
+                                ${option.score}%
+                            </strong>
+
+                            <br>
+
+                            💡 ${option.reason}
+
+                        </div>
+
+                    `;
+
+                }
+            );
+
+        }
+
+
+        /*
+           REQUIREMENTS
+        */
+
+        if (
+            data.requirements &&
+            data.requirements.length > 0
+        ) {
+
+            html += `
+
+                <h3 style="
+                    margin-top:25px;
+                ">
+
+                    📚 What You Need
+
+                </h3>
+
+                <ul style="
+                    line-height:1.8;
+                ">
+
+            `;
+
+
+            data.requirements.forEach(
+                function(requirement) {
+
+                    html += `
+                        <li>${requirement}</li>
+                    `;
+
+                }
+            );
+
+
+            html += `</ul>`;
+
+        }
+
+
+        /*
+           ROADMAP
+        */
+
+        if (
+            data.roadmap &&
+            data.roadmap.length > 0
+        ) {
+
+            html += `
+
+                <h3 style="
+                    margin-top:25px;
+                ">
+
+                    🛣️ Your Possible Route
+
+                </h3>
+
+                <ol style="
+                    line-height:1.8;
+                    padding-left:25px;
+                ">
+
+            `;
+
+
+            data.roadmap.forEach(
+                function(step) {
+
+                    html += `
+                        <li>${step}</li>
+                    `;
+
+                }
+            );
+
+
+            html += `</ol>`;
+
+        }
+
+
+        html += `</div>`;
+
+
+        result.innerHTML = html;
+
+        result.scrollIntoView({
+            behavior: "smooth"
+        });
+
+    })
+
+    .catch(function(error) {
+
+        console.error(error);
+
+        result.innerHTML = `
+
+            <div style="
+                padding:20px;
+                background:#fef2f2;
+                border:1px solid #fecaca;
+                border-radius:14px;
+                color:#991b1b;
+            ">
+
+                ❌ Could not connect to
+                the CareerAI server.
+
+            </div>
+
+        `;
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
